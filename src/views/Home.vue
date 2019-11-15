@@ -33,7 +33,7 @@
       <div style="background-color:#FFFBF0; width: 500px;" class="card">
         <div class="card-body">
           <h5 class="card-title">Enter your name: </h5>
-          <input class="form-control" type="text" placeholder="Enter your name"> <br>
+          <input v-model="name" class="form-control" type="text" placeholder="Enter your name"> <br>
           <button @click="displayRoomList()" type="button" id="submit-btn" class="hvr-float-shadow btn">Submit</button>
         </div>
       </div>
@@ -47,10 +47,16 @@ export default {
   components: {
     
   },
+  data(){
+    return{
+      name : ''
+    }
+  },
   methods: {
     displayRoomList() {
-      this.$router.push('/roomlist')
-    }
+      localStorage.setItem('name', this.name)
+      this.$store.dispatch('room', this.name)
+    },
   }
 }
 </script>

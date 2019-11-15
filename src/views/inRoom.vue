@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="!this.roomStatus">
     <center> <div id="roomlist-title">{{ roomtitle }}</div> </center>
     <div class="table-wrapper">
       <div class="thead-wrapper">
@@ -10,46 +11,120 @@
         <div class="tbody-wrapper"> <!-- looping body item -->
           <div class="body-item">
             <div class="body-item-number">1</div>
-            <div class="body-item-name">Rizki</div> 
+            <div class="body-item-name">{{player1.name}}</div> 
             <div class="body-item-name">Room Master</div> 
           </div>
           <div class="body-item">
             <div class="body-item-number">2</div>
-            <div class="body-item-name">Aiman</div>
+            <div class="body-item-name">{{player2.name}}</div>
             <div class="body-item-name">Participant</div> 
           </div>
         </div>
     </div>
     <center>
-      <button @click="toGame()" class="hvr-grow-shadow start-room-btn">Start</button>
+      <button v-if="player2.name" @click="toGame()" class="hvr-grow-shadow start-room-btn">Start</button>
       <button @click="toHome()" class="hvr-grow-shadow leave-room-btn">Leave</button>
-    </center>
+      <div v-if="!player2.name" id="form-name">
+        <div style="background-color:#FFFBF0; width: 500px;" class="card">
+          <div class="card-body">
+            <h5 class="card-title">Enter your name to Join: </h5>
+            <input v-model="name" class="form-control" type="text" placeholder="Enter your name"> <br>
+            <button @click="join" type="button" id="submit-btn" class="hvr-float-shadow btn">Submit</button>
+          </div>
+        </div>
+      </div>
+   </center>
   </div>
+  <div v-if="this.roomStatus=== true">
+    <inGame/>
+  </div>
+    </div>
+
 </template>
 
 <script>
+import InGame from '../components/HelloWorld'
+import db from '../../config/firestore'
 export default {
+  components:{
+    InGame
+  },
     data() {
         return {
-            roomtitle: ''
+            roomtitle: '',
+            roomStatus:'',
+            name: '',
+            player1:{
+              name : '',
+              life : '',
+            } ,
+            player2:{
+              name : '',
+              life : '',
+            },
+            player1Life: '',
+            player2Life: '',
+            questions: [],
+            selected: '',
+            randomPosition: [],
+            ans: [],
+            raw: '',
+            correctAns: '',
+            questDatabase: ''
         }
     },
     methods: {
+      fetchDatabase () {
+        db.collection('room').doc(`${this.$route.params.id}`)
+          .onSnapshot(doc => {
+            console.log(doc.data())
+            this.player1.name = doc.data().player1.name
+            this.player2.name = doc.data().player2.name
+            this.$store.commit('PLAYER1_HEALTH', doc.data().player1.life)
+            this.$store.commit('PLAYER2_HEALTH', doc.data().player2.life)
+            this.roomStatus = doc.data().status
+            // this.questDatabase = doc.data().data nnti di STORE
+          })
+      },
+      join () {
+        localStorage.setItem('name', this.name)
+        let payload = {
+          name: this.name,
+          link: this.$route.params.id
+        }
+        this.$store.dispatch('join', payload)
+      },
       toHome () {
-          this.$router.push('/roomlist')
+          this.$router.push('/')
           localStorage.removeItem('room')
       }, 
       toGame () {
-          this.$router.push('/gameroom')
+          db.collection('room').doc(`${this.$route.params.id}`).update({
+            status: true
+          })
+          .then(_=>{
+            console.log(this.roomStatus,'ini di INROOM')
+            this.fetchDatabase()
+            this.$store.commit('STATUS_GAME', this.roomStatus)
+            
+          })
+
+          
       } 
     },
     created() {
+        this.fetchDatabase()
         this.roomtitle = localStorage.getItem('room')
     }
 }
 </script>
 
 <style scoped>
+#submit-btn {
+  background-color: #B53471;
+  font-weight: bold;
+  color: white;
+}
 
 .table-wrapper {
   margin: 80px;
