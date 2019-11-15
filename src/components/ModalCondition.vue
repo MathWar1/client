@@ -11,7 +11,6 @@
             </div>
         </div>
     </div> -->
-
     <div class="wrapper">
         <div class="popup">
             <div class="popup-inside">
@@ -28,19 +27,62 @@
                 <div class="content-wrapper">
                     <h1>YOU WIN</h1>
                     <p>Do you like it?</p>
-                    <p class="try-again" onclick="document.body.classList.remove('active')">Yes! I will try again</p>
+                    <p class="try-again" @click="toHome">Yes! Next Match</p>
                 </div>
             </div>
         </div>
     </div>
   </div>
 </template>
-
 <script>
 import { setInterval } from 'timers'
 export default {
     data () {
         return {
+            player: localStorage.getItem('player')
+        }
+    },
+    methods: {
+        toHome(){
+            document.body.classList.remove('active')
+            this.$router.push('/')
+        }
+    },
+    mounted(){
+        let show = setInterval(()=>{
+            if(this.player === 'player1'){
+                if(this.$store.state.player2Health == 0){
+                    document.body.classList.add('active')
+                    this.$store.commit('STOP_TIMER')
+                }
+            }else{
+                if(this.$store.state.player1Health == 0){
+                    document.body.classList.add('active')
+                    this.$store.commit('STOP_TIMER')
+                }
+            }
+
+        },3000)
+    },
+    computed: {
+    //   ...mapState([
+    //       'player1Health',
+    //       'player2Health'
+    //   ])
+    }
+}
+</script>
+<style scoped>
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+:root, button{
+    font-family: 'Raleway', serif;
+}
+*{
+    box-sizing: border-box;
+}
+.color{
+    background: linear-gradient(to right, #e1e0ff, #d7fadd);
+}
             test : false
         }
     },
@@ -87,7 +129,6 @@ body{
     letter-spacing: 3px;
     color: #b9b9b9;
 }
-
 h1{
     padding-bottom: 40px;
     text-transform: uppercase;
@@ -98,7 +139,6 @@ h1{
 p{
     padding-bottom: 15px;
 }
-
 p:last-of-type{
     padding-bottom: 0;
 }
@@ -203,23 +243,18 @@ p:last-of-type{
 .button:hover{
     box-shadow: -15px 0 70px -15px #504bff, 15px 0 70px -15px #4cfa63;
 }
-
 .button:hover .button-circle1{
     transform: translate(-15px, -15px) scale(0);
 }
-
 .button:hover .button-circle2{
     transform: translate(-15px, 15px) scale(0);
 }
-
 .button:hover .button-circle3{
     transform: translate(15px, -15px) scale(0);
 }
-
 .button:hover .button-circle4{
     transform: translate(15px, 15px) scale(0);
 }
-
 .button:hover .button-circle{
     box-shadow: none;
 }
@@ -353,6 +388,7 @@ p:last-of-type{
 .content-wrapper{
     text-align: center;
 }
+
 
 body.active .content{
     opacity: 1;
