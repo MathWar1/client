@@ -83,6 +83,45 @@ export default {
 .color{
     background: linear-gradient(to right, #e1e0ff, #d7fadd);
 }
+            test : false
+        }
+    },
+    methods: {
+        tes () {
+            }
+    },
+    mounted(){
+        let timer = 0
+        let stopwatch = setInterval(()=>{
+            timer +=1
+            if(timer === 2){
+                document.body.classList.add('active')
+            }
+        },3000)
+    },
+    computed: {
+       health(){
+           if (this.$store.mutation.CHANGE_HEAL()) return this.test = true
+    }
+  }
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+:root, button{
+    font-family: 'Raleway', serif;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+.color{
+    background: linear-gradient(to right, #e1e0ff, #d7fadd);
+}
+
 body{
     background: #191919;
     background: white;
@@ -96,17 +135,20 @@ h1{
     letter-spacing: 3px;
     font-size: 16px;
 }
+
 p{
     padding-bottom: 15px;
 }
 p:last-of-type{
     padding-bottom: 0;
 }
+
 .try-again{
     cursor: pointer;
     position: relative;
     font-size: 16px;
 }
+
 .try-again:after{
     content: '';
     position: absolute;
@@ -118,10 +160,12 @@ p:last-of-type{
     margin-top: 8px;
     transition: all 0.3s ease;
 }
+
 .try-again:hover:after{
     left: 40%;
     right: 40%;
 }
+
 .wrapper{
     position: absolute;
     left: 0;
@@ -132,6 +176,7 @@ p:last-of-type{
     align-items: center;
     justify-content: center;
 }
+
 .button{
     cursor: pointer;
     position: relative;
@@ -155,6 +200,7 @@ p:last-of-type{
     border-radius: 0px;
     box-shadow: 0 0 0 white, 0 0 0 white;
 }
+
 .button-text{
     display: inline-block;
     position: relative;
@@ -163,6 +209,7 @@ p:last-of-type{
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
 .button-circle{
     position: absolute;
     left: 0;
@@ -173,15 +220,18 @@ p:last-of-type{
     box-shadow: 0 0 10px #504bff, 0 0 20px #504bff, 0 0 30px #504bff;
     transition: all 0.5s ease;
 }
+
 .button-circle2{
     top: auto;
     bottom: 0;
 }
+
 .button-circle3{
     left: auto;
     right: 0;
     box-shadow: 0 0 10px #4cfa63, 0 0 20px #4cfa63, 0 0 30px #4cfa63;
 }
+
 .button-circle4{
     left: auto;
     top: auto;
@@ -189,6 +239,7 @@ p:last-of-type{
     right: 0;
     box-shadow: 0 0 10px #4cfa63, 0 0 20px #4cfa63, 0 0 30px #4cfa63;
 }
+
 .button:hover{
     box-shadow: -15px 0 70px -15px #504bff, 15px 0 70px -15px #4cfa63;
 }
@@ -207,6 +258,7 @@ p:last-of-type{
 .button:hover .button-circle{
     box-shadow: none;
 }
+
 .popup{
     opacity: 0;
     visibility: hidden;
@@ -221,6 +273,7 @@ p:last-of-type{
     justify-content: center;
     transition: all 0.2s ease
 }
+
 .popup-inside{
     position: absolute;
     left: 0;
@@ -234,6 +287,7 @@ p:last-of-type{
             box-shadow 0.5s ease 0.7s,
             border-radius 0.35s ease 0.7s;
 }
+
 .backgrounds{
     position: absolute;
     left: 0;
@@ -242,6 +296,7 @@ p:last-of-type{
     width: 100%;
     overflow: hidden;
 }
+
 .background{
     --offset: 0;
     position: absolute;
@@ -254,6 +309,7 @@ p:last-of-type{
     transition: all 0.5s ease 0s;
     border-radius: 50%;
 }
+
 .background2{
     --offset: 10%;
     position: absolute;
@@ -265,6 +321,7 @@ p:last-of-type{
     transform: scale(0);
     transition: all 0.5s ease 0.1s;
 }
+
 .background3{
     --offset: 20%;
     position: absolute;
@@ -276,6 +333,7 @@ p:last-of-type{
     z-index: 2;
     transition: all 0.5s ease 0.2s;
 }
+
 .background4{
     --offset: 30%;
     position: absolute;
@@ -287,6 +345,7 @@ p:last-of-type{
     z-index: 3;
     transition: all 0.5s ease 0.3s;
 }
+
 .background5{
     --offset: 40%;
     position: absolute;
@@ -298,6 +357,7 @@ p:last-of-type{
     z-index: 4;
     transition: all 0.5s ease 0.4s;
 }
+
 .background6{
     --offset: 40%;
     position: absolute;
@@ -309,6 +369,7 @@ p:last-of-type{
     z-index: 5;
     transition: all 0.8s ease 0.4s;
 }
+
 .content{
     --offset: 0;
     position: absolute;
@@ -323,24 +384,31 @@ p:last-of-type{
     transition: all 0.35s ease 0.75s;
     z-index: 10;
 }
+
 .content-wrapper{
     text-align: center;
 }
+
+
 body.active .content{
     opacity: 1;
     transform: none;
 }
+
 body.active .popup{
     opacity: 1;
     visibility: visible;
 }
+
 body.active .popup-inside{
     border-radius: 0;
     box-shadow: -50px 0 200px -50px #504bff, 50px 0 200px -50px #4cfa63;
 }
+
 body.active .background{
     transform: scale(1);
 }
+
 body.active .background6{
     transform: scale(8);
 }
