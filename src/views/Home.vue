@@ -24,7 +24,6 @@
       <i></i>
       <i></i>
       <i></i> 
-      
     </div>
     <div id="logo">
       <img id="logo-img" src="Mathwar.png" alt="">
